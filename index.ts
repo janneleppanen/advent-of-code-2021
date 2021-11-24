@@ -7,9 +7,5 @@ if (day === "all") {
     } catch (e) {}
   }
 } else {
-  try {
-    require(`./day-${day}`);
-  } catch (e) {
-    console.log(`Solution not found for day ${day}`);
-  }
+  require(`./day-${day}`);
 }
