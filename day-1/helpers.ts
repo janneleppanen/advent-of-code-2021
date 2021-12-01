@@ -1,13 +1,24 @@
-const getDepthIncreases = (depthMeasures: Number[]) => {
-  let depthIncreasesTimes = 0;
+const parseDepthMeasures = (data: string, slidingWindow = 1) => {
+  const depthMeasures = data.split("\n").map(Number);
 
-  for (let i = 0; i < depthMeasures.length; i++) {
-    if (depthMeasures[i] < depthMeasures[i + 1]) {
-      depthIncreasesTimes++;
-    }
-  }
+  return depthMeasures.map((_, index) => {
+    const measuresInSlidingWindow = depthMeasures.slice(
+      index,
+      index + slidingWindow
+    );
 
-  return depthIncreasesTimes;
+    return measuresInSlidingWindow.reduce((a, b) => a + b, 0);
+  });
 };
 
-export { getDepthIncreases };
+const getDepthIncreases = (depthMeasures: number[]) => {
+  const offsetArray = depthMeasures.map((value, index) => {
+    return depthMeasures[index + 1] - value;
+  });
+
+  const increases = offsetArray.filter((value) => value > 0).length;
+
+  return increases;
+};
+
+export { getDepthIncreases, parseDepthMeasures };

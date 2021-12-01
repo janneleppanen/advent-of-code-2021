@@ -1,4 +1,4 @@
-import { getDepthIncreases } from "./helpers";
+import { getDepthIncreases, parseDepthMeasures } from "./helpers";
 
 const data = `199
 200
@@ -13,8 +13,15 @@ const data = `199
 `;
 
 describe("Day 1", () => {
-  test("Part 1", () => {
-    const depthMeasures = data.split("\n").map(Number);
+  test.only("Part 1", () => {
+    const depthMeasures = parseDepthMeasures(data, 1);
+
     expect(getDepthIncreases(depthMeasures)).toBe(7);
+  });
+
+  test.only("Part 2", () => {
+    const depthMeasures = parseDepthMeasures(data, 3);
+
+    expect(getDepthIncreases(depthMeasures)).toBe(5);
   });
 });
