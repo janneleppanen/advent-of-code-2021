@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 
 type Callback = (input: string, resolve: Function) => void;
 
