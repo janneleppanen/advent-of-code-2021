@@ -19,3 +19,4 @@ Run tests for a single puzzle:
 ## Solutions
 
 🎄 [Solution for day 01](day-1/index.ts)
+🎄 [Solution for day 02](day-2/index.ts)

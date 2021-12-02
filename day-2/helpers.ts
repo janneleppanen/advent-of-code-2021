@@ -1,6 +1,6 @@
 type Move = {
-  horizontal: number;
-  depth: number;
+  x: number;
+  y: number;
 };
 
 const parseMoves = (data: string): Move[] => {
@@ -9,11 +9,11 @@ const parseMoves = (data: string): Move[] => {
 
     switch (direction) {
       case "forward":
-        return { depth: 0, horizontal: parseInt(value) };
+        return { y: 0, x: parseInt(value) };
       case "down":
-        return { depth: parseInt(value), horizontal: 0 };
+        return { y: -parseInt(value), x: 0 };
       case "up":
-        return { depth: -parseInt(value), horizontal: 0 };
+        return { y: parseInt(value), x: 0 };
     }
   });
 
@@ -24,11 +24,25 @@ const moveSubmarine = (moves: Move[]) => {
   const position = { depth: 0, horizontal: 0 };
 
   moves.forEach((move) => {
-    position.depth += move.depth;
-    position.horizontal += move.horizontal;
+    position.depth -= move.y;
+    position.horizontal += move.x;
   });
 
   return position;
 };
 
-export { parseMoves, moveSubmarine };
+const moveSubmarineWithManual = (moves: Move[]) => {
+  let position = { depth: 0, horizontal: 0 };
+  let aim = 0;
+
+  moves.forEach((move) => {
+    aim -= move.y;
+
+    position.depth += move.x * aim;
+    position.horizontal += move.x;
+  });
+
+  return position;
+};
+
+export { parseMoves, moveSubmarine, moveSubmarineWithManual };

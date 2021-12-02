@@ -1,4 +1,4 @@
-import { parseMoves, moveSubmarine } from "./helpers";
+import { parseMoves, moveSubmarine, moveSubmarineWithManual } from "./helpers";
 
 const input = `forward 5
 down 5
@@ -13,5 +13,12 @@ describe("Day 2", () => {
     const { depth, horizontal } = moveSubmarine(moves);
 
     expect(depth * horizontal).toBe(150);
+  });
+
+  test("Part 2", () => {
+    const moves = parseMoves(input);
+    const { depth, horizontal } = moveSubmarineWithManual(moves);
+
+    expect(depth * horizontal).toBe(900);
   });
 });
