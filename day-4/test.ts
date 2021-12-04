@@ -1,4 +1,10 @@
-import { getNumbers, getGrids, getBingoResult, getBestResult } from "./helpers";
+import {
+  getNumbers,
+  getGrids,
+  getBingoResult,
+  getBestResult,
+  getWorstResult,
+} from "./helpers";
 
 const input = `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
@@ -34,6 +40,22 @@ describe("Day 4", () => {
     expect(bestResult.points).toBe(188);
     expect(bestResult.points * bestResult.currentNumbers.reverse()[0]).toBe(
       4512
+    );
+  });
+
+  test("Part 2", () => {
+    const numbers = getNumbers(input);
+    const grids = getGrids(input);
+
+    const bingoResults = grids.map((grid) =>
+      getBingoResult(grid, numbers.slice(0, grid.length), numbers)
+    );
+
+    const worstResult = getWorstResult(bingoResults);
+
+    expect(worstResult.points).toBe(148);
+    expect(worstResult.points * worstResult.currentNumbers.reverse()[0]).toBe(
+      1924
     );
   });
 });

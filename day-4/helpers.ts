@@ -87,6 +87,7 @@ const getBestResult = (results: BingoResult[]) => {
   const drawResults = results.filter(
     (result) => result.currentNumbers.length === leastCurrentNumbersCount
   );
+
   const bestScore = drawResults.reduce(
     (score, result) => Math.max(score, result.points),
     0
@@ -95,4 +96,23 @@ const getBestResult = (results: BingoResult[]) => {
   return drawResults.find((result) => result.points === bestScore);
 };
 
-export { getNumbers, getGrids, getBingoResult, getBestResult };
+const getWorstResult = (results: BingoResult[]) => {
+  const mostCurrentNumbersCount = results.reduce(
+    (numberCount, result) =>
+      Math.max(result.currentNumbers.length, numberCount),
+    0
+  );
+
+  const drawResults = results.filter(
+    (result) => result.currentNumbers.length === mostCurrentNumbersCount
+  );
+
+  const worstScore = drawResults.reduce(
+    (score, result) => Math.min(score, result.points),
+    100000000
+  );
+
+  return drawResults.find((result) => result.points === worstScore);
+};
+
+export { getNumbers, getGrids, getBingoResult, getBestResult, getWorstResult };
