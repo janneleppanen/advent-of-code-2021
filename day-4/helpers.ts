@@ -1,6 +1,6 @@
 type BingoResult = {
   isBingo: boolean;
-  points: number;
+  score: number;
   currentNumbers: number[];
   grid: number[][];
 };
@@ -31,8 +31,6 @@ const getBingoResult = (
 
   // horizontal
   grid.forEach((rowNumbers) => {
-    // const hit = row.every((number) => currentNumbers.includes(number));
-
     if (isBingoLine(rowNumbers, currentNumbers)) {
       isBingo = true;
     }
@@ -41,9 +39,6 @@ const getBingoResult = (
   // vertical
   for (var column = 0; column < grid[0].length; column++) {
     const columnNumbers = grid.map((row) => row[column]);
-    // const hit = columnNumbers.every((number) =>
-    //   currentNumbers.includes(number)
-    // );
 
     if (isBingoLine(columnNumbers, currentNumbers)) {
       isBingo = true;
@@ -53,7 +48,7 @@ const getBingoResult = (
   if (currentNumbers.length === numbers.length || isBingo) {
     return {
       isBingo,
-      points: getPoints(grid, currentNumbers),
+      score: getScore(grid, currentNumbers),
       currentNumbers,
       grid,
     };
@@ -70,11 +65,14 @@ const isBingoLine = (lineNumbers: number[], bingoNumbers: number[]) => {
   return lineNumbers.every((number) => bingoNumbers.includes(number));
 };
 
-const getPoints = (grid: number[][], currentNumbers: number[]) => {
-  return grid
-    .reduce((acc, row) => [...acc, ...row], [])
-    .filter((number) => !currentNumbers.includes(number))
-    .reduce((points, number) => points + number, 0);
+const getScore = (grid: number[][], currentNumbers: number[]) => {
+  return (
+    grid
+      .reduce((acc, row) => [...acc, ...row], [])
+      .filter((number) => !currentNumbers.includes(number))
+      .reduce((points, number) => points + number, 0) *
+    currentNumbers.reverse()[0]
+  );
 };
 
 const getBestResult = (results: BingoResult[]) => {
@@ -89,11 +87,11 @@ const getBestResult = (results: BingoResult[]) => {
   );
 
   const bestScore = drawResults.reduce(
-    (score, result) => Math.max(score, result.points),
+    (score, result) => Math.max(score, result.score),
     0
   );
 
-  return drawResults.find((result) => result.points === bestScore);
+  return drawResults.find((result) => result.score === bestScore);
 };
 
 const getWorstResult = (results: BingoResult[]) => {
@@ -108,11 +106,11 @@ const getWorstResult = (results: BingoResult[]) => {
   );
 
   const worstScore = drawResults.reduce(
-    (score, result) => Math.min(score, result.points),
+    (score, result) => Math.min(score, result.score),
     100000000
   );
 
-  return drawResults.find((result) => result.points === worstScore);
+  return drawResults.find((result) => result.score === worstScore);
 };
 
 export { getNumbers, getGrids, getBingoResult, getBestResult, getWorstResult };

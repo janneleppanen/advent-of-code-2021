@@ -15,11 +15,8 @@ run(__dirname, (input: string, resolve: Function) => {
   );
 
   const bestResult = getBestResult(bingoResults);
-  const bestScore = bestResult.points * bestResult.currentNumbers.reverse()[0];
-  resolve(bestScore);
+  resolve(bestResult.score);
 
   const worstResult = getWorstResult(bingoResults);
-  const worstScore =
-    worstResult.points * worstResult.currentNumbers.reverse()[0];
-  resolve(worstScore);
+  resolve(worstResult.score);
 });

@@ -37,10 +37,7 @@ describe("Day 4", () => {
 
     const bestResult = getBestResult(bingoResults);
 
-    expect(bestResult.points).toBe(188);
-    expect(bestResult.points * bestResult.currentNumbers.reverse()[0]).toBe(
-      4512
-    );
+    expect(bestResult.score).toBe(4512);
   });
 
   test("Part 2", () => {
@@ -53,9 +50,6 @@ describe("Day 4", () => {
 
     const worstResult = getWorstResult(bingoResults);
 
-    expect(worstResult.points).toBe(148);
-    expect(worstResult.points * worstResult.currentNumbers.reverse()[0]).toBe(
-      1924
-    );
+    expect(worstResult.score).toBe(1924);
   });
 });
