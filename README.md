@@ -20,3 +20,6 @@ Run tests for a single puzzle:
 
 🎄 [Solution for day 01](day-1/index.ts)  
 🎄 [Solution for day 02](day-2/index.ts)
+🎄 [Solution for day 03](day-3/index.ts)
+🎄 [Solution for day 04](day-4/index.ts)
+🎄 [Solution for day 05](day-5/index.ts)
