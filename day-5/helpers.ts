@@ -36,22 +36,24 @@ const getLineMap = (lines: Line[]) => {
   const lineMap: object = {};
 
   lines.forEach(({ start, end }) => {
-    let x = Math.min(start.x, end.x);
-    let y = Math.min(start.y, end.y);
-    let width = Math.abs(start.x - end.x);
-    let height = Math.abs(start.y - end.y);
-    let length = Math.max(width, height);
+    const width = Math.abs(start.x - end.x);
+    const height = Math.abs(start.y - end.y);
+    const length = Math.max(width, height);
+    const dx = (end.x - start.x) / length;
+    const dy = (end.y - start.y) / length;
 
-    while (length >= 0) {
+    let tick = 0;
+
+    while (length >= tick) {
+      const x = Math.floor(start.x + dx * tick);
+      const y = Math.floor(start.y + dy * tick);
+
       if (!lineMap[`${x}-${y}`]) {
         lineMap[`${x}-${y}`] = 0;
       }
 
       lineMap[`${x}-${y}`]++;
-
-      if (width > 0) x++;
-      if (height > 0) y++;
-      length--;
+      tick++;
     }
   });
 
@@ -76,16 +78,18 @@ const getDangerousPoints = (lineMap: object, threshold: number) => {
   return dangerousPoints;
 };
 
-const drawMap = (lineMap: object, width = 10, height = 10) => {
+const getDrawnMap = (lineMap: object, width = 10, height = 10) => {
   let map = "";
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       map += lineMap[`${x}-${y}`] ? lineMap[`${x}-${y}`] : ".";
-      map += " ";
     }
-    map += "\n";
+
+    if (y + 1 < height) map += "\n";
   }
+
+  return map;
 };
 
 export {
@@ -93,5 +97,5 @@ export {
   getNonDiagonalLines,
   getLineMap,
   getDangerousPoints,
-  drawMap,
+  getDrawnMap,
 };

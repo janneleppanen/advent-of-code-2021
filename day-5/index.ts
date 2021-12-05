@@ -9,8 +9,13 @@ import {
 run(__dirname, (input: string, resolve: Function) => {
   const lines = parseLines(input);
   const basicLines = getNonDiagonalLines(lines);
-  const lineMap = getLineMap(basicLines);
-  const dangerousPoints = getDangerousPoints(lineMap, 2);
+  const basicLineMap = getLineMap(basicLines);
+  const dangerousPoints1 = getDangerousPoints(basicLineMap, 2);
 
-  resolve(dangerousPoints.length);
+  resolve(dangerousPoints1.length);
+
+  const lineMap = getLineMap(lines);
+  const dangerousPoints2 = getDangerousPoints(lineMap, 2);
+
+  resolve(dangerousPoints2.length);
 });
