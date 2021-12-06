@@ -23,3 +23,4 @@ Run tests for a single puzzle:
 🎄 [Solution for day 03](day-3/index.ts)
 🎄 [Solution for day 04](day-4/index.ts)
 🎄 [Solution for day 05](day-5/index.ts)
+🎄 [Solution for day 06](day-6/index.ts)
