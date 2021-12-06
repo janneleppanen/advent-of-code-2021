@@ -9,7 +9,7 @@ const simulateDays = (fishesAtStart: number[], days: number) => {
     fishes = fishes.map((fish) => {
       fish--;
       if (fish === -1) {
-        fish = 8;
+        fish = 6;
         fishesToAdd++;
       }
 
@@ -17,7 +17,7 @@ const simulateDays = (fishesAtStart: number[], days: number) => {
     });
 
     for (let j = 0; j < fishesToAdd; j++) {
-      fishes.push(6);
+      fishes.push(8);
     }
   }
 
