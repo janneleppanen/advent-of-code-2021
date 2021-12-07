@@ -1,29 +1,22 @@
 const parseFishTimers = (input: string) => input.split(",").map(Number);
 
 const simulateDays = (fishesAtStart: number[], days: number) => {
-  let fishes = {};
+  let fishes: number[] = Array(9).fill(0);
 
   fishesAtStart.forEach((fish) => {
-    if (!fishes[fish]) fishes[fish] = 0;
-
     fishes[fish]++;
   });
 
   for (let i = 0; i < days; i++) {
-    const newFishes = {};
+    const newFishes: number[] = Array(9).fill(0);
 
     Object.keys(fishes).forEach((key) => {
       const fishTimer = Number(key);
 
       if (fishTimer > 0) {
-        if (!newFishes[fishTimer - 1]) newFishes[fishTimer - 1] = 0;
-
         newFishes[fishTimer - 1] += fishes[fishTimer];
       }
       if (fishTimer === 0) {
-        if (!newFishes[6]) newFishes[6] = 0;
-        if (!newFishes[8]) newFishes[8] = 0;
-
         newFishes[6] += fishes[fishTimer];
         newFishes[8] += fishes[fishTimer];
       }
@@ -35,11 +28,11 @@ const simulateDays = (fishesAtStart: number[], days: number) => {
   return fishes;
 };
 
-const countFishes = (fishes: object) => {
+const countFishes = (fishes: number[]) => {
   let total = 0;
 
-  Object.keys(fishes).forEach((key) => {
-    total += fishes[key];
+  fishes.forEach((fishesAtTime) => {
+    total += fishesAtTime;
   });
 
   return total;
