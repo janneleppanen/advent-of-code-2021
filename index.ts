@@ -4,11 +4,11 @@ const run = () => {
   if (day === "all") {
     for (let d = 1; d < 26; d++) {
       try {
-        import(`./day-${d}`);
+        require(`./day-${d}`);
       } catch (e) {}
     }
   } else {
-    import(`./day-${day}`);
+    require(`./day-${day}`);
   }
 };
 
