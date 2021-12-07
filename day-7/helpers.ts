@@ -1,18 +1,26 @@
+type Method = (positions: number[], spot: number) => number;
+
 const parsePositions = (input: string) => input.split(",").map(Number);
 
-const calculateOptimalSpot = (positions: number[]) => {
+const calculateOptimalSpot = (
+  positions: number[],
+  fuelCosumingMethod: Method
+) => {
   const max = Math.max(...positions);
   const min = Math.min(...positions);
   const result = {
-    fuelNeeded: null,
+    fuelConsumption: null,
     spot: null,
   };
 
   for (let i = min; i <= max; i++) {
-    const fuelNeeded = calculateNeededFuel(positions, i);
+    const fuelConsumption = fuelCosumingMethod(positions, i);
 
-    if (result.fuelNeeded === null || fuelNeeded < result.fuelNeeded) {
-      result.fuelNeeded = fuelNeeded;
+    if (
+      result.fuelConsumption === null ||
+      fuelConsumption < result.fuelConsumption
+    ) {
+      result.fuelConsumption = fuelConsumption;
       result.spot = i;
     }
   }
@@ -20,10 +28,24 @@ const calculateOptimalSpot = (positions: number[]) => {
   return result;
 };
 
-const calculateNeededFuel = (positions: number[], spot: number) => {
+const withSimpleFuelConsumption = (positions: number[], spot: number) => {
   return positions.reduce((total, position) => {
     return total + Math.abs(position - spot);
   }, 0);
 };
 
-export { parsePositions, calculateOptimalSpot, calculateNeededFuel };
+const withAccurateFuelConsumption = (positions: number[], spot: number) => {
+  return positions.reduce((total, position) => {
+    const distance = Math.abs(position - spot);
+    const fuelConsumption = (distance * (distance + 1)) / 2;
+
+    return total + fuelConsumption;
+  }, 0);
+};
+
+export {
+  parsePositions,
+  calculateOptimalSpot,
+  withSimpleFuelConsumption,
+  withAccurateFuelConsumption,
+};
