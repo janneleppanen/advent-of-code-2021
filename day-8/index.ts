@@ -19,4 +19,13 @@ run(__dirname, (input: string, resolve: Function) => {
   });
 
   resolve(countOfPart1Numbers);
+
+  const sum = entries.reduce((sum, entry) => {
+    const converter = getPatternConverter(entry.patterns);
+    const numbers = convertOutputToNumbers(entry.output, converter);
+
+    return sum + parseInt(numbers.join(""));
+  }, 0);
+
+  resolve(sum);
 });
