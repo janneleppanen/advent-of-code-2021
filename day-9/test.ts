@@ -1,4 +1,10 @@
-import { parseHeightMap, getLowPoints, calculateRiskLevel } from "./helpers";
+import {
+  parseHeightMap,
+  getLowPoints,
+  calculateRiskLevel,
+  getBasins,
+  sortBasinsBySize,
+} from "./helpers";
 
 const input = `2199943210
 3987894921
@@ -13,5 +19,14 @@ describe("Day 9", () => {
     const riskLevel = calculateRiskLevel(lowPoints);
 
     expect(riskLevel).toBe(15);
+  });
+
+  test("Part 2", () => {
+    const heightMap = parseHeightMap(input);
+    const basins = getBasins(heightMap);
+    const sortedBasins = sortBasinsBySize(basins);
+    const [basin1, basin2, basin3] = sortedBasins;
+
+    expect(basin1.length * basin2.length * basin3.length).toBe(1134);
   });
 });
