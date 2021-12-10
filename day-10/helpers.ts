@@ -1,8 +1,15 @@
-const bracketPoits = {
+const errorBacketScoreMap = {
   ")": 3,
   "]": 57,
   "}": 1197,
   ">": 25137,
+};
+
+const autoCompleteBracketScoreMap = {
+  ")": (score) => score * 5 + 1,
+  "]": (score) => score * 5 + 2,
+  "}": (score) => score * 5 + 3,
+  ">": (score) => score * 5 + 4,
 };
 
 const parseLines = (input: string) => {
@@ -22,6 +29,7 @@ type LineValidityReport = {
   status: LineStatus;
   line: string[];
   lastBracket?: string;
+  remainingBuffer: string[];
 };
 
 const validateLine = (line: string[]): LineValidityReport => {
@@ -39,6 +47,7 @@ const validateLine = (line: string[]): LineValidityReport => {
         return {
           status: LineStatus.Corrupted,
           lastBracket: bracket,
+          remainingBuffer: buffer,
           line,
         };
       }
@@ -48,12 +57,14 @@ const validateLine = (line: string[]): LineValidityReport => {
   if (buffer.length > 0) {
     return {
       status: LineStatus.Incomplete,
+      remainingBuffer: buffer,
       line,
     };
   }
 
   return {
     status: LineStatus.Complete,
+    remainingBuffer: buffer,
     line,
   };
 };
@@ -65,8 +76,20 @@ const isMatchingBrackets = (openingBracket: string, closingBracket: string) => {
   return openingBracketIndex === closingBracketIndex;
 };
 
-const getErrorPoints = (lineReport: LineValidityReport) => {
-  return bracketPoits[lineReport.lastBracket];
+const getErrorScore = (lineReport: LineValidityReport) => {
+  return errorBacketScoreMap[lineReport.lastBracket];
 };
 
-export { parseLines, validateLine, getErrorPoints };
+const getAutoCompleteScore = (lineReport: LineValidityReport) => {
+  const neededClosingBrackets = lineReport.remainingBuffer
+    .map((bracket) => closingBrackets[openingBrackets.indexOf(bracket)])
+    .reverse();
+
+  const score = neededClosingBrackets.reduce((score, bracket) => {
+    return autoCompleteBracketScoreMap[bracket](score);
+  }, 0);
+
+  return score;
+};
+
+export { parseLines, validateLine, getErrorScore, getAutoCompleteScore };

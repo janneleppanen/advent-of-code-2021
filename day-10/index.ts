@@ -3,7 +3,8 @@ import {
   parseLines,
   validateLine,
   LineStatus,
-  getErrorPoints,
+  getErrorScore,
+  getAutoCompleteScore,
 } from "./helpers";
 
 run(__dirname, (input: string, resolve: Function) => {
@@ -12,10 +13,23 @@ run(__dirname, (input: string, resolve: Function) => {
   const corruptedLineReports = validatedLineReports.filter(
     (lineReport) => lineReport.status === LineStatus.Corrupted
   );
-  const errorPoints = corruptedLineReports.reduce(
-    (sum, lineReport) => sum + getErrorPoints(lineReport),
+  const totalErrorScore = corruptedLineReports.reduce(
+    (sum, lineReport) => sum + getErrorScore(lineReport),
     0
   );
 
-  resolve(errorPoints);
+  resolve(totalErrorScore);
+
+  const incompleteLineReports = validatedLineReports.filter(
+    (lineReport) => lineReport.status === LineStatus.Incomplete
+  );
+
+  const autoCompleteScores = incompleteLineReports
+    .map(getAutoCompleteScore)
+    .sort((a, b) => a - b);
+
+  const scoreInMiddle =
+    autoCompleteScores[Math.floor(autoCompleteScores.length / 2)];
+
+  resolve(scoreInMiddle);
 });
