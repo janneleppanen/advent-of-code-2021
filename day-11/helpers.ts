@@ -18,7 +18,7 @@ const parseOctopuses = (input: string): Octopus[] => {
   return grid.flat();
 };
 
-const simulate = (octopuses: Octopus[], iterations: number) => {
+const simulate = (octopuses: Octopus[], iterations: number = 1) => {
   let simulatedOctopuses: Octopus[] = [...octopuses];
   let flashCount = 0;
 
@@ -45,6 +45,29 @@ const simulate = (octopuses: Octopus[], iterations: number) => {
   return {
     octopuses: simulatedOctopuses,
     flashCount,
+  };
+};
+
+const simulateUntilAllFlashes = (octopuses: Octopus[]) => {
+  let simulatedOctopuses: Octopus[] = [...octopuses];
+  let step = 0;
+  let allFlaheshed = false;
+
+  while (!allFlaheshed) {
+    step++;
+    const simulationResult = simulate(simulatedOctopuses);
+    simulatedOctopuses = [...simulationResult.octopuses];
+
+    allFlaheshed = simulatedOctopuses.every((octopus) => octopus.energy === 0);
+
+    if (step % 100 === 0) {
+      console.log(`Step: ${step}`);
+    }
+  }
+
+  return {
+    step,
+    octopuses,
   };
 };
 
@@ -98,4 +121,4 @@ const getOctopusMap = (octopuses: Octopus[]) => {
   }, "");
 };
 
-export { parseOctopuses, simulate, getOctopusMap };
+export { parseOctopuses, simulate, getOctopusMap, simulateUntilAllFlashes };

@@ -1,4 +1,4 @@
-import { parseOctopuses, simulate, getOctopusMap } from "./helpers";
+import { parseOctopuses, simulate, simulateUntilAllFlashes } from "./helpers";
 
 const _input = `11111
 19991
@@ -23,5 +23,12 @@ describe("Day 11", () => {
     const simulationResult = simulate(octopuses, 100);
 
     expect(simulationResult.flashCount).toBe(1656);
+  });
+
+  test("Part 2", () => {
+    const octopuses = parseOctopuses(input);
+    const simulationResult = simulateUntilAllFlashes(octopuses);
+
+    expect(simulationResult.step).toBe(195);
   });
 });
