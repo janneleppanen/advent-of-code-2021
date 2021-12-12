@@ -16,35 +16,32 @@ const parsePaths = (input: string): Path[] => {
 
 const findRoutes = (
   paths: Path[],
-  currentLocation = "start",
-  currentRoute = [],
+  canVisit,
+  location = "start",
+  route = [],
   validRoutes = []
 ): Route[] => {
-  const isSmallCave = currentLocation.toLocaleLowerCase() === currentLocation;
-  const isPathAlreadyIncurrentRoute = currentRoute.some(
-    (location) => location === currentLocation
-  );
-
-  if (isSmallCave && isPathAlreadyIncurrentRoute) {
-    return; // Dead end
+  if (!canVisit(location, route)) {
+    return;
   }
 
-  if (currentLocation === "end") {
-    validRoutes.push([...currentRoute, currentLocation]);
+  if (location === "end") {
+    validRoutes.push([...route, location]);
     return;
   }
 
   let branches = paths.filter(
-    (path) => path.start === currentLocation || path.end === currentLocation
+    (path) => path.start === location || path.end === location
   );
 
   branches.map((branch) => {
-    const nextLocation =
-      branch.start === currentLocation ? branch.end : branch.start;
+    const nextLocation = branch.start === location ? branch.end : branch.start;
+
     return findRoutes(
       paths,
+      canVisit,
       nextLocation,
-      [...currentRoute, currentLocation],
+      [...route, location],
       validRoutes
     );
   });
@@ -52,4 +49,38 @@ const findRoutes = (
   return validRoutes;
 };
 
-export { parsePaths, findRoutes };
+const Rules = {
+  canVisitSameSmallCaveOnlyOnce: (location, route) => {
+    const isSmallCave = location.toLocaleLowerCase() === location;
+    const isLocationAlreadyInRoute = route.includes(location);
+
+    if (isSmallCave && isLocationAlreadyInRoute) {
+      return false;
+    }
+
+    return true;
+  },
+  canRevisitAnySmallCaveOnlyOnce: (location, route) => {
+    const isSmallCave = location.toLowerCase() === location;
+    const isLocationAlreadyInRoute = route.includes(location);
+    const smallCaves = route.filter((loc) => loc.toLowerCase() === loc);
+    const hasAlreadyVisitedSmallCaveTwice = smallCaves.some(
+      (loc, index) => smallCaves.indexOf(loc) !== index
+    );
+
+    // Cannot visit start location twice
+    if (route.length > 0 && location === "start") return false;
+
+    if (
+      isSmallCave &&
+      isLocationAlreadyInRoute &&
+      hasAlreadyVisitedSmallCaveTwice
+    ) {
+      return false;
+    }
+
+    return true;
+  },
+};
+
+export { parsePaths, findRoutes, Rules };
