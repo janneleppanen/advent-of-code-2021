@@ -28,3 +28,6 @@ Run tests for a single puzzle:
 🎄 [Solution for day 08](day-8/index.ts)  
 🎄 [Solution for day 09](day-9/index.ts)  
 🎄 [Solution for day 10](day-10/index.ts)
+🎄 [Solution for day 11](day-11/index.ts)
+🎄 [Solution for day 12](day-12/index.ts)
+🎄 [Solution for day 13](day-13/index.ts)
