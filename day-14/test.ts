@@ -1,4 +1,9 @@
-import { parseInput, process, getPolymerElements } from "./helpers";
+import {
+  parseInput,
+  process,
+  getPolymerElements,
+  stringToPairMap,
+} from "./helpers";
 
 const input = `NNCB
 
@@ -21,29 +26,33 @@ CN -> C`;
 
 describe("Day 14", () => {
   test("Part 1", () => {
-    let { template: polymer, pairInsertions } = parseInput(input);
+    let { pairMap, pairInsertions, template } = parseInput(input);
 
-    polymer = process(polymer, pairInsertions);
-    expect(polymer).toBe("NCNBCHB");
-
-    polymer = process(polymer, pairInsertions);
-    expect(polymer).toBe("NBCCNBBBCBHCB");
-
-    polymer = process(polymer, pairInsertions);
-    expect(polymer).toBe("NBBBCNCCNBBNBNBBCHBHHBCHB");
-
-    polymer = process(polymer, pairInsertions);
-    expect(polymer).toBe("NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB");
-
-    for (let i = 0; i < 6; i++) {
-      polymer = process(polymer, pairInsertions);
+    for (let i = 0; i < 10; i++) {
+      pairMap = process(pairMap, pairInsertions);
     }
 
-    const elements = getPolymerElements(polymer);
+    const elements = getPolymerElements(pairMap, template);
+
+    expect(elements.B).toBe(1749);
+    expect(elements.C).toBe(298);
+    expect(elements.N).toBe(865);
+    expect(elements.H).toBe(161);
+  });
+
+  test("Part 2", () => {
+    let { template, pairMap, pairInsertions } = parseInput(input);
+
+    for (let i = 0; i < 40; i++) {
+      pairMap = process(pairMap, pairInsertions);
+    }
+
+    const elements = getPolymerElements(pairMap, template);
+
     const mostCommonElementCount = Math.max(...Object.values(elements));
     const leastCommonElementCount = Math.min(...Object.values(elements));
 
-    expect(mostCommonElementCount).toBe(1749);
-    expect(leastCommonElementCount).toBe(161);
+    expect(mostCommonElementCount).toBe(2192039569602);
+    expect(leastCommonElementCount).toBe(3849876073);
   });
 });
